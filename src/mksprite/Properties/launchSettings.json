@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "mksprite": {
+      "commandName": "Project",
+      "commandLineArgs": "-dumb"
+    }
+  }
+}

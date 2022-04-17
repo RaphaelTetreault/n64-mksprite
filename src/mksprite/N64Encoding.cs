@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace mksprite
+namespace MakeSprite
 {
     public abstract class N64Encoding
     {

@@ -1,7 +1,7 @@
 ﻿using Manifold.IO;
 using System.Drawing;
 
-namespace mksprite
+namespace MakeSprite
 {
     internal class EncodingRGBA32 : N64Encoding
     {

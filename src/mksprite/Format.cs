@@ -1,4 +1,4 @@
-﻿namespace mksprite
+﻿namespace MakeSprite
 {
     public enum Format : byte
     {

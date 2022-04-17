@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace mksprite
+namespace MakeSprite
 {
     public class Sprite :
         IBinarySerializable,
