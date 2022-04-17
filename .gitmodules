@@ -1,0 +1,3 @@
+[submodule "libs/Manifold.Core"]
+	path = libs/Manifold.Core
+	url = ../Manifold.Core.git
