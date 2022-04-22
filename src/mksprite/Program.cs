@@ -2,14 +2,12 @@
 //      CommandLineParser
 //      ImageSharp
 
-using MakeSprite;
+using CommandLine;
 using Manifold;
 using Manifold.IO;
 using System;
-//using System.Drawing;
 using System.Collections.Generic;
 using System.Text;
-using CommandLine;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -18,60 +16,16 @@ namespace MakeSprite
 {
     public static class Program
     {
-        public class Options
-        {
-            [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
-            public bool Verbose { get; set; }
-
-            [Option('p', "path", Required = true, HelpText = "Path to source image file.")]
-            public string Path { get; set; } = string.Empty;
-
-            [Option("searchSubdirs", Required = false, HelpText = "(true|false) Whether or not to search subdirectories for files when using the directory mode.")]
-            public bool SearchSubdirectories { get; set; }
-
-            [Option("searchPattern", Required = false, HelpText = "x.")]
-            public string SearchPattern { get; set; } = string.Empty;
-
-            [Option('m', "mode", Required = false, HelpText = "x")]
-            public OperationMode Mode { get; set; }
-
-            [Option('f', "format", Required = false, HelpText = "x")]
-            public Format Format { get; set; } = Format.FMT_NONE;
-
-            [Option("slicesH", Min = 1, Required = false, HelpText = "Number of slices across the horizontal axis (vertical cuts).")]
-            public int SlicesH { get; set; } = 1;
-
-            [Option("slicesV", Min = 1, Required = false, HelpText = "Number of slices across the vertical axis (horizontal cuts).")]
-            public int SlicesV { get; set; } = 1;
-
-
-            [Option("resizeW", Required = false, HelpText = "Resize image width")]
-            public int? ResizeW { get; set; }
-
-            [Option("resizeH", Required = false, HelpText = "Resize image height")]
-            public int? ResizeH{ get; set; }
-
-
-            public SearchOption SearchOption => SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-        }
-
         public static void Main(string[] args)
         {
-
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(RunOptions);
         }
 
         public static void RunOptions(Options options)
         {
-            Console.WriteLine("Options:");
-            Console.WriteLine($"{nameof(options.Path)}: {options.Path}");
-            Console.WriteLine($"{nameof(options.Verbose)}: {options.Verbose}");
-            Console.WriteLine($"{nameof(options.Mode)}: {options.Mode}");
-            Console.WriteLine($"{nameof(options.SearchSubdirectories)}: {options.SearchSubdirectories}");
-            Console.WriteLine($"{nameof(options.SearchPattern)}: {options.SearchPattern}");
-            Console.WriteLine($"{nameof(options.Format)}: {options.Format}");
-
+            //if (options.Verbose)
+                options.PrintState();
 
             switch (options.Mode)
             {

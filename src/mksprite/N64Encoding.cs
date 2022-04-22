@@ -9,8 +9,9 @@ namespace MakeSprite
         public abstract int BitsPerPixel { get; }
         public abstract Format Format { get; }
 
-        public abstract MemoryStream ConvertImage(Image<Rgba32> bitmap);
+        public abstract MemoryStream ConvertImage(Image<Rgba32> image);
         public abstract Image<Rgba32> ConvertSprite(Sprite sprite);
+
 
         public static int GetDataSize(Image<Rgba32> bitmap, N64Encoding encoding)
         {
@@ -32,6 +33,7 @@ namespace MakeSprite
                     throw new NotImplementedException();
             }
         }
+
         public static byte FormatToBitsPerPixel(Format format)
         {
             switch (format)
@@ -81,6 +83,22 @@ namespace MakeSprite
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        public static double Rgba32ToIntensity(Rgba32 rgba32)
+        {
+            var grayscale =
+                rgba32.R * 0.299 +
+                rgba32.G * 0.587 +
+                rgba32.B * 0.114;
+
+            return grayscale;
+        }
+
+        public static byte Rgba32ToIntensity8(Rgba32 rgba32)
+        {
+            byte value = (byte)(Rgba32ToIntensity(rgba32) * byte.MaxValue);
+            return value;
         }
 
     }
