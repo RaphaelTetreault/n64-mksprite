@@ -57,5 +57,31 @@ namespace MakeSprite
             }
         }
 
+        public static byte FormatToBytesPerPixel(Format format)
+        {
+            switch (format)
+            {
+                case Format.FMT_RGBA32:
+                    return 4;
+
+                case Format.FMT_RGBA16:
+                    return 2;
+
+                case Format.FMT_CI8:
+                case Format.FMT_I8:
+                case Format.FMT_IA8:
+                    return 1;
+
+                case Format.FMT_CI4:
+                case Format.FMT_I4:
+                case Format.FMT_IA4:
+                    throw new NotImplementedException("I don't actually know the answer. 0? 1?");
+                    //return 1;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
     }
 }
