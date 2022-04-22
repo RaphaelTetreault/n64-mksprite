@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using MakeSprite;
 
 namespace MakeSprite
 {
@@ -25,7 +24,9 @@ namespace MakeSprite
             public const string Mode =
                 "The mode of operation for this tool.";
 
-            public static readonly string Format =
+            public const string ex = $"{SearchPattern}";
+
+            public static readonly string FormatRO =
                 $"The desired output sprite format." +
                 $"\n\t{(byte)MakeSprite.Format.RGBA32} - {MakeSprite.Format.RGBA32}" +
                 $"\n\t{(byte)MakeSprite.Format.RGBA16} - {MakeSprite.Format.RGBA16}" +
@@ -35,6 +36,17 @@ namespace MakeSprite
                 $"\n\t{(byte)MakeSprite.Format.CI4} - {MakeSprite.Format.CI4}" +
                 $"\n\t{(byte)MakeSprite.Format.I4} - {MakeSprite.Format.I4}" +
                 $"\n\t{(byte)MakeSprite.Format.IA4} - {MakeSprite.Format.IA4}";
+
+            public const string Format =
+                $"The desired output sprite format." +
+                $"\n\t1 - RGBA32" +
+                $"\n\t2 - RGBA16" +
+                $"\n\t3 - CI8" +
+                $"\n\t4 - I8" +
+                $"\n\t5 - IA8" +
+                $"\n\t6 - CI4" +
+                $"\n\t7 - I4" +
+                $"\n\t8 - IA4";
 
             public const string SlicesH =
                 "Number of slices across the horizontal axis (vertical cuts).";
@@ -69,7 +81,7 @@ namespace MakeSprite
         [Option('m', "mode", Required = false, HelpText = Help.Mode)]
         public OperationMode Mode { get; set; }
 
-        [Option('f', "format", Required = false, HelpText = "x")]
+        [Option('f', "format", Required = false, HelpText = Help.Format)]
         public Format Format { get; set; } = Format.None;
 
         [Option("slicesH", Required = false, HelpText = Help.SlicesH)]
@@ -92,12 +104,18 @@ namespace MakeSprite
         public void PrintState()
         {
             Console.WriteLine("Options:");
-            Console.WriteLine($"{nameof(InputPath)}: {InputPath}");
             Console.WriteLine($"{nameof(Verbose)}: {Verbose}");
+            Console.WriteLine($"{nameof(InputPath)}: {InputPath}");
+            Console.WriteLine($"{nameof(OutputPath)}: {OutputPath}");
             Console.WriteLine($"{nameof(Mode)}: {Mode}");
             Console.WriteLine($"{nameof(SearchSubdirectories)}: {SearchSubdirectories}");
+            Console.WriteLine($"{nameof(SearchOption)}: {SearchOption}");
             Console.WriteLine($"{nameof(SearchPattern)}: {SearchPattern}");
             Console.WriteLine($"{nameof(Format)}: {Format}");
+            Console.WriteLine($"{nameof(SlicesH)}: {SlicesH}");
+            Console.WriteLine($"{nameof(SlicesV)}: {SlicesV}");
+            Console.WriteLine($"{nameof(ResizeW)}: {ResizeW}");
+            Console.WriteLine($"{nameof(ResizeH)}: {ResizeH}");
         }
     }
 

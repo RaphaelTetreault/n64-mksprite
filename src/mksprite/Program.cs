@@ -45,8 +45,7 @@ namespace MakeSprite
                     break;
                 case OperationMode.file:
                     OpModeFile(options);
-                    throw new NotImplementedException();
-                //break;
+                    break;
 
                 default:
                     throw new NotImplementedException("Selected mode does not exist.");
@@ -68,7 +67,7 @@ namespace MakeSprite
             if (definedOutputPath && outputDoesNotExist)
             {
                 VerboseConsole.WriteLine($"Path provided is not a valid directory!");
-                VerboseConsole.WriteLine($"\t{nameof(options.InputPath)}:{options.InputPath}");
+                VerboseConsole.WriteLine($"\t{nameof(options.OutputPath)}:{options.OutputPath}");
                 return;
             }
 
@@ -84,13 +83,14 @@ namespace MakeSprite
             VerboseConsole.WriteLine($"Found {files.Length} files.");
             foreach (var file in files)
             {
-                ConvertImage(file, options);
+                var sprite = LoadImageAsSprite(file, options);
+                SaveFile(sprite, file, options);
             }
         }
 
         public static void OpModeFile(Options options)
         {
-            var inputDoesNotExist = !Directory.Exists(options.InputPath);
+            var inputDoesNotExist = !File.Exists(options.InputPath);
             if (inputDoesNotExist)
             {
                 VerboseConsole.WriteLine($"Path provided is not a valid file!");
@@ -98,7 +98,8 @@ namespace MakeSprite
                 return;
             }
 
-            throw new NotImplementedException();
+            var sprite = LoadImageAsSprite(options.InputPath, options);
+            SaveFile(sprite, options.InputPath, options);
         }
 
         public static void OpModeInteractive(Options options)
@@ -121,7 +122,7 @@ namespace MakeSprite
             }
         }
 
-        public static void ConvertImage(string filePath, Options options)
+        public static Sprite LoadImageAsSprite(string filePath, Options options)
         {
             var image = Image.Load(filePath) as Image<Rgba32>;
 
@@ -141,13 +142,11 @@ namespace MakeSprite
             };
             sprite.SetImage(image, options.Format);
 
-            string outputPath = FormatOutputPath(filePath, sprite, options);
-            Console.Write($"Writing file: {outputPath}");
-            BinarySerializableIO.SaveFile(sprite, outputPath);
-            Console.WriteLine($" ... success!");
+            return sprite;
         }
 
-        public static string FormatOutputPath(string inputFilePath, IFileType outputFile, Options options)
+
+        public static string GetFileOutputPath(string inputFilePath, IFileType outputFile, Options options)
         {
             bool hasOutputPath = !string.IsNullOrEmpty(options.OutputPath);
 
@@ -159,14 +158,29 @@ namespace MakeSprite
             {
                 string beyondRootPath = inputFilePath.Replace(options.InputPath, "");
                 string subDirectories = Path.GetDirectoryName(beyondRootPath);
-                directory = Path.Combine(directory, subDirectories);
 
-                if (!Directory.Exists(directory))
+                var hasSubdirectories = !string.IsNullOrEmpty(subDirectories);
+                if (hasSubdirectories)
+                    directory = Path.Combine(directory, subDirectories);
+
+                var directoryPathDoesNotExists = !Directory.Exists(directory);
+                if (directoryPathDoesNotExists)
                     Directory.CreateDirectory(directory);
             }
 
             string outputPath = $"{directory}/{outputFile.FileName}{outputFile.FileExtension}";
             return outputPath;
+        }
+
+
+
+        public static void SaveFile<TBinarySerializable>(TBinarySerializable value, string inputFilePath, Options options)
+            where TBinarySerializable : IBinaryFileType, IBinarySerializable
+        {
+            var outputPath = GetFileOutputPath(inputFilePath, value, options);
+            Console.Write($"Writing file: {outputPath}");
+            BinarySerializableIO.SaveFile(value, outputPath);
+            Console.WriteLine($" ... success!");
         }
 
     }
