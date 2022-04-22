@@ -2,7 +2,7 @@
 {
     public enum Format : byte
     {
-        FMT_NONE = 0,
+        None = 0,
 
         RGBA32,
         RGBA16,

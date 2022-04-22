@@ -24,54 +24,86 @@ namespace MakeSprite
 
         public static void RunOptions(Options options)
         {
-            //if (options.Verbose)
+            if (options.Verbose)
+            {
                 options.PrintState();
+                Console.WriteLine();
+            }
+
+            VerboseConsole.IsVerbose = options.Verbose;
+            VerboseConsole.WriteLine($"Mode: {options.Mode}");
+
 
             switch (options.Mode)
             {
                 case OperationMode.interactive:
-                    {
-                        Console.WriteLine("Interactive mode");
-                    }
-                    break;
+                    OpModeInteractive(options);
+                    throw new NotImplementedException();
+                //break;
                 case OperationMode.directory:
-                    {
-                        Console.WriteLine("Directory mode");
-                        OpModeDirectory(options);
-                    }
+                    OpModeDirectory(options);
                     break;
                 case OperationMode.file:
-                    {
-                        Console.WriteLine("File mode.");
-                    }
-                    break;
+                    OpModeFile(options);
+                    throw new NotImplementedException();
+                //break;
 
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("Selected mode does not exist.");
             }
         }
 
         public static void OpModeDirectory(Options options)
         {
-            if (!Directory.Exists(options.Path))
+            var inputDoesNotExist = !Directory.Exists(options.InputPath);
+            if (inputDoesNotExist)
             {
-                Console.WriteLine($"Path provided is not a valid directory! Arg:{options.Path}");
+                VerboseConsole.WriteLine($"Path provided is not a valid directory!");
+                VerboseConsole.WriteLine($"\t{nameof(options.InputPath)}:{options.InputPath}");
+                return;
             }
 
-            var files = Directory.GetFiles(options.Path, options.SearchPattern, options.SearchOption);
+            var definedOutputPath = !string.IsNullOrEmpty(options.OutputPath);
+            var outputDoesNotExist = !Directory.Exists(options.OutputPath);
+            if (definedOutputPath && outputDoesNotExist)
+            {
+                VerboseConsole.WriteLine($"Path provided is not a valid directory!");
+                VerboseConsole.WriteLine($"\t{nameof(options.InputPath)}:{options.InputPath}");
+                return;
+            }
 
+            var files = Directory.GetFiles(options.InputPath, options.SearchPattern, options.SearchOption);
             if (files.IsNullOrEmpty())
             {
-                Console.WriteLine($"Pattern found no matches in path provided!");
-                Console.WriteLine($"\t{nameof(options.Path)}:{options.Path}");
-                Console.WriteLine($"\t{nameof(options.SearchPattern)}:{options.SearchPattern}");
-                Console.WriteLine($"\t{nameof(options.SearchSubdirectories)}:{options.SearchSubdirectories}");
+                VerboseConsole.WriteLine($"Pattern found no matches in path provided!");
+                VerboseConsole.WriteLine($"\t{nameof(options.InputPath)}:{options.InputPath}");
+                VerboseConsole.WriteLine($"\t{nameof(options.SearchPattern)}:{options.SearchPattern}");
+                VerboseConsole.WriteLine($"\t{nameof(options.SearchSubdirectories)}:{options.SearchSubdirectories}");
             }
 
+            VerboseConsole.WriteLine($"Found {files.Length} files.");
             foreach (var file in files)
             {
                 ConvertImage(file, options);
             }
+        }
+
+        public static void OpModeFile(Options options)
+        {
+            var inputDoesNotExist = !Directory.Exists(options.InputPath);
+            if (inputDoesNotExist)
+            {
+                VerboseConsole.WriteLine($"Path provided is not a valid file!");
+                VerboseConsole.WriteLine($"\t{nameof(options.InputPath)}:{options.InputPath}");
+                return;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public static void OpModeInteractive(Options options)
+        {
+            throw new NotImplementedException();
         }
 
         // TODO: implement resampler selection
@@ -95,7 +127,7 @@ namespace MakeSprite
 
             if (image == null)
                 throw new FileLoadException("Failed to load file.", filePath);
-            Console.WriteLine($"Read file: {filePath}");
+            VerboseConsole.WriteLine($"Read file: {filePath}");
 
             var sprite = new Sprite()
             {
@@ -109,10 +141,33 @@ namespace MakeSprite
             };
             sprite.SetImage(image, options.Format);
 
-            string outputPath = $"{Path.GetDirectoryName(filePath)}/{sprite.FileName}{sprite.FileExtension}";
+            string outputPath = FormatOutputPath(filePath, sprite, options);
             Console.Write($"Writing file: {outputPath}");
             BinarySerializableIO.SaveFile(sprite, outputPath);
             Console.WriteLine($" ... success!");
         }
+
+        public static string FormatOutputPath(string inputFilePath, IFileType outputFile, Options options)
+        {
+            bool hasOutputPath = !string.IsNullOrEmpty(options.OutputPath);
+
+            string directory = !hasOutputPath
+                ? Path.GetDirectoryName(inputFilePath)
+                : options.OutputPath;
+
+            if (hasOutputPath)
+            {
+                string beyondRootPath = inputFilePath.Replace(options.InputPath, "");
+                string subDirectories = Path.GetDirectoryName(beyondRootPath);
+                directory = Path.Combine(directory, subDirectories);
+
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+            }
+
+            string outputPath = $"{directory}/{outputFile.FileName}{outputFile.FileExtension}";
+            return outputPath;
+        }
+
     }
 }
