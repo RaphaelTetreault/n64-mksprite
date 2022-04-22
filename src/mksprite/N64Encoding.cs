@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿//using System.Drawing;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace MakeSprite
 {
@@ -7,15 +9,15 @@ namespace MakeSprite
         public abstract int BitsPerPixel { get; }
         public abstract Format Format { get; }
 
-        public abstract MemoryStream ConvertBitmap(Bitmap bitmap);
-        public abstract Bitmap ConvertSprite(Sprite sprite);
+        public abstract MemoryStream ConvertImage(Image<Rgba32> bitmap);
+        public abstract Image<Rgba32> ConvertSprite(Sprite sprite);
 
-        public static int GetDataSize(Bitmap bitmap, N64Encoding encoding)
+        public static int GetDataSize(Image<Rgba32> bitmap, N64Encoding encoding)
         {
             var width = bitmap.Width;
             var height = bitmap.Height;
             var bpp = encoding.BitsPerPixel;
-            var size = (int)(width * height * bpp / 32.0);
+            var size = (int)(width * height * bpp / 8.0);
             return size;
         }
 

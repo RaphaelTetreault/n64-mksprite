@@ -1,10 +1,12 @@
 ﻿using Manifold.IO;
 using System;
-using System.Drawing;
+//using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace MakeSprite
 {
@@ -56,13 +58,18 @@ namespace MakeSprite
             writer.Write(data);
         }
 
-        public void SetBitmap(Bitmap bitmap, N64Encoding encoding)
+        public void SetImage(Image<Rgba32> image, N64Encoding encoding)
         {
-            var stream = encoding.ConvertBitmap(bitmap);
+            var stream = encoding.ConvertImage(image);
             data = stream.ToArray();
         }
+        public void SetImage(Image<Rgba32> image, Format format)
+        {
+            var encoding = N64Encoding.FormatToEncoding(format);
+            SetImage(image, encoding);
+        }
 
-        public Bitmap GetBitmap()
+        public Image<Rgba32> GetImage()
         {
             var encoding = N64Encoding.FormatToEncoding(format);
             var bitmap = encoding.ConvertSprite(this);

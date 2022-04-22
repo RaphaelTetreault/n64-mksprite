@@ -10,7 +10,8 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Text;
 using CommandLine;
-
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 public static class Program
 {
@@ -93,29 +94,28 @@ public static class Program
         
         if (files.IsNullOrEmpty())
         {
-            Console.WriteLine($"Pattern found no matches in Path provided! Arg:{options.Path}");
+            Console.WriteLine($"Pattern found no matches in path provided!");
             Console.WriteLine($"\t{nameof(options.Path)}:{options.Path}");
-            Console.WriteLine($"\t{nameof(options.SearchSubdirectories)}:{options.SearchSubdirectories}");
             Console.WriteLine($"\t{nameof(options.SearchPattern)}:{options.SearchPattern}");
+            Console.WriteLine($"\t{nameof(options.SearchSubdirectories)}:{options.SearchSubdirectories}");
         }
-
 
         foreach (var file in files)
         {
             Console.WriteLine($"Processing file: {file}");
 
-            var bitmap = Bitmap.FromFile(file);
-            var encoding = N64Encoding.FormatToEncoding(options.Format);
+            var image = SixLabors.ImageSharp.Image.Load(file) as Image<Rgba32>;
             var sprite = new Sprite()
             {
                 FileName = Path.GetFileNameWithoutExtension(file),
-                Width = (ushort)bitmap.Width,
-                Height = (ushort)bitmap.Height,
+                Width = (ushort)image.Width,
+                Height = (ushort)image.Height,
                 Format = options.Format,
                 BitDepth = N64Encoding.FormatToBitsPerPixel(options.Format),
-                SlicesH = 0,
-                SlicesV = 0,
+                SlicesH = 1,
+                SlicesV = 1,
             };
+            sprite.SetImage(image, options.Format);
 
             string dest = $"{Path.GetDirectoryName(file)}/{sprite.FileName}{sprite.FileExtension}";
             Console.Write($"Writing file: {dest}/{sprite.FileName}{sprite.FileExtension}");
