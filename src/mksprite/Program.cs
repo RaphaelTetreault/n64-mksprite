@@ -52,6 +52,14 @@ namespace MakeSprite
             }
         }
 
+        public static void ShowErrors(Options options)
+        {
+            if (options.SlicesH != 1 || options.SlicesV != 1)
+                Console.WriteLine("Slices not yet implemented.");
+
+
+        }
+
         public static void OpModeDirectory(Options options)
         {
             var inputDoesNotExist = !Directory.Exists(options.InputPath);
@@ -108,28 +116,35 @@ namespace MakeSprite
         }
 
         // TODO: implement resampler selection
-        public static void TryResize(Image image, Options options)
+        public static void ResizeImage(Image image, Options options)
         {
             bool doResizeW = options.ResizeW != null;
             bool doResizeH = options.ResizeH != null;
-            if (doResizeW || doResizeH)
-            {
+            //if (doResizeW || doResizeH)
+            //{
 #pragma warning disable CS8629 // Nullable value type may be null.
                 int w = doResizeW ? (int)options.ResizeW : image.Width;
                 int h = doResizeH ? (int)options.ResizeH : image.Height;
 #pragma warning restore CS8629 // Nullable value type may be null.
                 image.Mutate(ipc => ipc.Resize(w, h));
-            }
+            //}
         }
 
         public static Sprite LoadImageAsSprite(string filePath, Options options)
         {
+            // Load image file
             var image = Image.Load(filePath) as Image<Rgba32>;
 
+            // Make sure we got it
             if (image == null)
                 throw new FileLoadException("Failed to load file.", filePath);
             VerboseConsole.WriteLine($"Read file: {filePath}");
 
+            // If the user wants to resize the iamge, do that now
+            if (options.UserWantsResize)
+                ResizeImage(image, options);
+
+            // Create sprite using image and option parameters
             var sprite = new Sprite()
             {
                 FileName = Path.GetFileNameWithoutExtension(filePath),

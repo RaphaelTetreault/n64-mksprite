@@ -99,6 +99,7 @@ namespace MakeSprite
 
 
         public SearchOption SearchOption => SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+        public bool UserWantsResize => ResizeW != null && ResizeH != null;
 
 
         public void PrintState()
