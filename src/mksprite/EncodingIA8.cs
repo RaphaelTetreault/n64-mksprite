@@ -8,7 +8,7 @@ namespace MakeSprite
         public static EncodingIA8 Encoding => new EncodingIA8();
 
         public override int BitsPerPixel => 8;
-        public override Format Format => Format.FMT_IA8;
+        public override Format Format => Format.IA8;
 
 
         public override MemoryStream ConvertImage(Image<Rgba32> image)

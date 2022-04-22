@@ -8,7 +8,7 @@ namespace MakeSprite
         public static EncodingIA4 Encoding => new EncodingIA4();
 
         public override int BitsPerPixel => 4;
-        public override Format Format => Format.FMT_IA4;
+        public override Format Format => Format.IA4;
 
 
         public override MemoryStream ConvertImage(Image<Rgba32> image)

@@ -70,25 +70,7 @@ namespace MakeSprite
 
             foreach (var file in files)
             {
-                Console.WriteLine($"Processing file: {file}");
-
-                var image = SixLabors.ImageSharp.Image.Load(file) as Image<Rgba32>;
-                var sprite = new Sprite()
-                {
-                    FileName = Path.GetFileNameWithoutExtension(file),
-                    Width = (ushort)image.Width,
-                    Height = (ushort)image.Height,
-                    Format = options.Format,
-                    BitDepth = N64Encoding.FormatToBitsPerPixel(options.Format),
-                    SlicesH = checked((byte)options.SlicesH),
-                    SlicesV = checked((byte)options.SlicesV),
-                };
-                sprite.SetImage(image, options.Format);
-
-                string dest = $"{Path.GetDirectoryName(file)}/{sprite.FileName}{sprite.FileExtension}";
-                Console.Write($"Writing file: {dest}/{sprite.FileName}{sprite.FileExtension}");
-                BinarySerializableIO.SaveFile(sprite, dest);
-                Console.WriteLine($" ... success!");
+                ConvertImage(file, options);
             }
         }
 
@@ -99,10 +81,38 @@ namespace MakeSprite
             bool doResizeH = options.ResizeH != null;
             if (doResizeW || doResizeH)
             {
+#pragma warning disable CS8629 // Nullable value type may be null.
                 int w = doResizeW ? (int)options.ResizeW : image.Width;
                 int h = doResizeH ? (int)options.ResizeH : image.Height;
+#pragma warning restore CS8629 // Nullable value type may be null.
                 image.Mutate(ipc => ipc.Resize(w, h));
             }
+        }
+
+        public static void ConvertImage(string filePath, Options options)
+        {
+            var image = Image.Load(filePath) as Image<Rgba32>;
+
+            if (image == null)
+                throw new FileLoadException("Failed to load file.", filePath);
+            Console.WriteLine($"Read file: {filePath}");
+
+            var sprite = new Sprite()
+            {
+                FileName = Path.GetFileNameWithoutExtension(filePath),
+                Width = (ushort)image.Width,
+                Height = (ushort)image.Height,
+                Format = options.Format,
+                BitDepth = N64Encoding.FormatToBitsPerPixel(options.Format),
+                SlicesH = checked((byte)options.SlicesH),
+                SlicesV = checked((byte)options.SlicesV),
+            };
+            sprite.SetImage(image, options.Format);
+
+            string outputPath = $"{Path.GetDirectoryName(filePath)}/{sprite.FileName}{sprite.FileExtension}";
+            Console.Write($"Writing file: {outputPath}");
+            BinarySerializableIO.SaveFile(sprite, outputPath);
+            Console.WriteLine($" ... success!");
         }
     }
 }

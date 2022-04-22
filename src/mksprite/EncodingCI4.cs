@@ -8,7 +8,7 @@ namespace MakeSprite
         public static EncodingCI4 Encoding => new EncodingCI4();
 
         public override int BitsPerPixel => 4;
-        public override Format Format => Format.FMT_CI4;
+        public override Format Format => Format.CI4;
 
 
         public override MemoryStream ConvertImage(Image<Rgba32> image)

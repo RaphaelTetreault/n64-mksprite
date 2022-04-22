@@ -8,7 +8,7 @@ namespace MakeSprite
         public static EncodingRGBA16 Encoding => new EncodingRGBA16();
 
         public override int BitsPerPixel => 16;
-        public override Format Format => Format.FMT_RGBA16;
+        public override Format Format => Format.RGBA16;
 
 
         public override MemoryStream ConvertImage(Image<Rgba32> image)

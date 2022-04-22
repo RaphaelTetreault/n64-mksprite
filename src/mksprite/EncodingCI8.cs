@@ -8,7 +8,7 @@ namespace MakeSprite
         public static EncodingCI8 Encoding => new EncodingCI8();
 
         public override int BitsPerPixel => 8;
-        public override Format Format => Format.FMT_CI8;
+        public override Format Format => Format.CI8;
 
 
         public override MemoryStream ConvertImage(Image<Rgba32> image)
