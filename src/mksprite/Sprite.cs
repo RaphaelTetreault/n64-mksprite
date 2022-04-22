@@ -18,7 +18,7 @@ namespace MakeSprite
         private Format format;
         private byte slicesH;
         private byte slicesV;
-        private byte[] data;
+        private byte[] data = new byte[0];
 
         public ushort Width { get => width; set => width = value; }
         public ushort Height { get => height; set => height = value; }
@@ -26,7 +26,7 @@ namespace MakeSprite
         public Format Format { get => format; set => format = value; }
         public byte SlicesH { get => slicesH; set => slicesH = value; }
         public byte SlicesV { get => slicesV; set => slicesV = value; }
-
+        public byte[] Data => data;
         public int Size => (int)(width * height * bitDepth / 32.0);
 
         public Endianness Endianness => Endianness.BigEndian;
@@ -64,7 +64,9 @@ namespace MakeSprite
 
         public Bitmap GetBitmap()
         {
-            throw new NotImplementedException();
+            var encoding = N64Encoding.FormatToEncoding(format);
+            var bitmap = encoding.ConvertSprite(this);
+            return bitmap;
         }
 
     }

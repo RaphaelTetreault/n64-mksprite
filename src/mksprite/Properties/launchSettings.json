@@ -2,7 +2,7 @@
   "profiles": {
     "mksprite": {
       "commandName": "Project",
-      "commandLineArgs": "-dumb"
+      "commandLineArgs": "--path=\"D:\\gitlab\\n64-test\\src\\filesystem\\spr\\\\\"  --searchPattern=\"*.png\"  --searchSubdirs=true -m 1 -f 1"
     }
   }
 }
