@@ -5,8 +5,6 @@ namespace MakeSprite
 {
     internal class EncodingRGBA32 : N64Encoding
     {
-        public static EncodingRGBA32 Encoding => new EncodingRGBA32();
-
         public override int BitsPerPixel => 32;
         public override Format Format => Format.RGBA32;
 

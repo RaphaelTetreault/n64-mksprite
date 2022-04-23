@@ -65,13 +65,13 @@ namespace MakeSprite
         }
         public void SetImage(Image<Rgba32> image, Format format)
         {
-            var encoding = N64Encoding.FormatToEncoding(format);
+            var encoding = FormatUtility.FormatToEncoding(format);
             SetImage(image, encoding);
         }
 
         public Image<Rgba32> GetImage()
         {
-            var encoding = N64Encoding.FormatToEncoding(format);
+            var encoding = FormatUtility.FormatToEncoding(format);
             var bitmap = encoding.ConvertSprite(this);
             return bitmap;
         }

@@ -5,7 +5,6 @@ namespace MakeSprite
 {
     internal class EncodingIA8 : N64Encoding
     {
-        public static EncodingIA8 Encoding => new EncodingIA8();
 
         public override int BitsPerPixel => 8;
         public override Format Format => Format.IA8;
@@ -25,7 +24,7 @@ namespace MakeSprite
                         var pixel = image[x, y];
 
                         // i = intensity, a = alpha
-                        byte i = Rgba32ToIntensity8(pixel);
+                        byte i = FormatUtility.Rgba32ToIntensity8(pixel);
                         byte a = pixel.A;
 
                         byte ia8 = (byte)(

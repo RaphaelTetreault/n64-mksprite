@@ -33,6 +33,7 @@ namespace MakeSprite
             VerboseConsole.IsVerbose = options.Verbose;
             VerboseConsole.WriteLine($"Mode: {options.Mode}");
 
+            ShowWarnings(options);
 
             switch (options.Mode)
             {
@@ -52,12 +53,10 @@ namespace MakeSprite
             }
         }
 
-        public static void ShowErrors(Options options)
+        public static void ShowWarnings(Options options)
         {
             if (options.SlicesH != 1 || options.SlicesV != 1)
                 Console.WriteLine("Slices not yet implemented.");
-
-
         }
 
         public static void OpModeDirectory(Options options)
@@ -65,7 +64,7 @@ namespace MakeSprite
             var inputDoesNotExist = !Directory.Exists(options.InputPath);
             if (inputDoesNotExist)
             {
-                VerboseConsole.WriteLine($"Path provided is not a valid directory!");
+                Console.WriteLine($"Path provided is not a valid directory!");
                 VerboseConsole.WriteLine($"\t{nameof(options.InputPath)}:{options.InputPath}");
                 return;
             }
@@ -74,7 +73,7 @@ namespace MakeSprite
             var outputDoesNotExist = !Directory.Exists(options.OutputPath);
             if (definedOutputPath && outputDoesNotExist)
             {
-                VerboseConsole.WriteLine($"Path provided is not a valid directory!");
+                Console.WriteLine($"Path provided is not a valid directory!");
                 VerboseConsole.WriteLine($"\t{nameof(options.OutputPath)}:{options.OutputPath}");
                 return;
             }
@@ -82,10 +81,11 @@ namespace MakeSprite
             var files = Directory.GetFiles(options.InputPath, options.SearchPattern, options.SearchOption);
             if (files.IsNullOrEmpty())
             {
-                VerboseConsole.WriteLine($"Pattern found no matches in path provided!");
+                Console.WriteLine($"Pattern found no matches in path provided!");
                 VerboseConsole.WriteLine($"\t{nameof(options.InputPath)}:{options.InputPath}");
                 VerboseConsole.WriteLine($"\t{nameof(options.SearchPattern)}:{options.SearchPattern}");
                 VerboseConsole.WriteLine($"\t{nameof(options.SearchSubdirectories)}:{options.SearchSubdirectories}");
+                return;
             }
 
             VerboseConsole.WriteLine($"Found {files.Length} files.");
@@ -101,7 +101,7 @@ namespace MakeSprite
             var inputDoesNotExist = !File.Exists(options.InputPath);
             if (inputDoesNotExist)
             {
-                VerboseConsole.WriteLine($"Path provided is not a valid file!");
+                Console.WriteLine($"Path provided is not a valid file!");
                 VerboseConsole.WriteLine($"\t{nameof(options.InputPath)}:{options.InputPath}");
                 return;
             }
@@ -151,7 +151,7 @@ namespace MakeSprite
                 Width = (ushort)image.Width,
                 Height = (ushort)image.Height,
                 Format = options.Format,
-                BitDepth = N64Encoding.FormatToBitsPerPixel(options.Format),
+                BitDepth = FormatUtility.FormatToBitsPerPixel(options.Format),
                 SlicesH = checked((byte)options.SlicesH),
                 SlicesV = checked((byte)options.SlicesV),
             };

@@ -5,8 +5,6 @@ namespace MakeSprite
 {
     internal class EncodingIA4 : N64Encoding
     {
-        public static EncodingIA4 Encoding => new EncodingIA4();
-
         public override int BitsPerPixel => 4;
         public override Format Format => Format.IA4;
 
@@ -27,8 +25,8 @@ namespace MakeSprite
                         var pixel1 = image[x+1, y];
 
                         // i = intensity, a = alpha
-                        byte i0 = Rgba32ToIntensity8(pixel0);
-                        byte i1 = Rgba32ToIntensity8(pixel1);
+                        byte i0 = FormatUtility.Rgba32ToIntensity8(pixel0);
+                        byte i1 = FormatUtility.Rgba32ToIntensity8(pixel1);
                         byte a0 = pixel0.A;
                         byte a1 = pixel1.A;
 

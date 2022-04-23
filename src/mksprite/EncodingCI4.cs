@@ -5,8 +5,6 @@ namespace MakeSprite
 {
     internal class EncodingCI4 : N64Encoding
     {
-        public static EncodingCI4 Encoding => new EncodingCI4();
-
         public override int BitsPerPixel => 4;
         public override Format Format => Format.CI4;
 

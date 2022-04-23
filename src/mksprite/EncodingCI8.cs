@@ -5,8 +5,6 @@ namespace MakeSprite
 {
     internal class EncodingCI8 : N64Encoding
     {
-        public static EncodingCI8 Encoding => new EncodingCI8();
-
         public override int BitsPerPixel => 8;
         public override Format Format => Format.CI8;
 

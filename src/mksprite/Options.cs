@@ -82,7 +82,7 @@ namespace MakeSprite
         public OperationMode Mode { get; set; }
 
         [Option('f', "format", Required = false, HelpText = Help.Format)]
-        public Format Format { get; set; } = Format.None;
+        public string FormatStr { get; set; } = "rgba32";
 
         [Option("slicesH", Required = false, HelpText = Help.SlicesH)]
         public int SlicesH { get; set; } = 1;
@@ -100,6 +100,7 @@ namespace MakeSprite
 
         public SearchOption SearchOption => SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
         public bool UserWantsResize => ResizeW != null && ResizeH != null;
+        public Format Format => Enum.Parse<Format>(FormatStr, true);
 
 
         public void PrintState()
