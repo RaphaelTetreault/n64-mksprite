@@ -118,16 +118,9 @@ namespace MakeSprite
         // TODO: implement resampler selection
         public static void ResizeImage(Image image, Options options)
         {
-            bool doResizeW = options.ResizeW != null;
-            bool doResizeH = options.ResizeH != null;
-            //if (doResizeW || doResizeH)
-            //{
-#pragma warning disable CS8629 // Nullable value type may be null.
-                int w = doResizeW ? (int)options.ResizeW : image.Width;
-                int h = doResizeH ? (int)options.ResizeH : image.Height;
-#pragma warning restore CS8629 // Nullable value type may be null.
-                image.Mutate(ipc => ipc.Resize(w, h));
-            //}
+            int w = options.ResizeW != null ? (int)options.ResizeW : image.Width;
+            int h = options.ResizeH != null ? (int)options.ResizeH : image.Height;
+            image.Mutate(ipc => ipc.Resize(w, h));
         }
 
         public static Sprite LoadImageAsSprite(string filePath, Options options)
@@ -155,7 +148,7 @@ namespace MakeSprite
                 SlicesH = checked((byte)options.SlicesH),
                 SlicesV = checked((byte)options.SlicesV),
             };
-            sprite.SetImage(image, options.Format);
+            sprite.SetImage(image, options);
 
             return sprite;
         }

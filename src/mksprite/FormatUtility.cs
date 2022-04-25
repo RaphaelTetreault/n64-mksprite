@@ -1,5 +1,6 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System.Linq;
 
 namespace MakeSprite
 {
@@ -99,6 +100,36 @@ namespace MakeSprite
         {
             byte value = (byte)(Rgba32ToIntensity(rgba32) * byte.MaxValue);
             return value;
+        }
+
+        public static void WriteImagePalette(BinaryWriter writer, Image<Rgba32> image, int numColors)
+        {
+            var values = new Dictionary<Rgba32, int>();
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    var pixel = image[x, y];
+                    if (values.ContainsKey(pixel))
+                        values[pixel]++;
+                    else
+                        values.Add(pixel, 1);
+                }
+            }
+
+            var selected = values
+                .OrderByDescending(x => x.Value)
+                .Take(numColors)
+                .ToList();
+
+            for (int i = 0; i < selected.Count; i++)
+            {
+                var kvp = selected[i];
+                EncodingRGBA16.WritePixel(writer, kvp.Key);
+            }
+
+
+
         }
 
     }

@@ -9,37 +9,20 @@ namespace MakeSprite
         public override int BitsPerPixel => 8;
         public override Format Format => Format.IA8;
 
-
-        public override MemoryStream ConvertImage(Image<Rgba32> image)
+        internal override void WritePixel(BinaryWriter writer, Rgba32 pixel)
         {
-            var capacity = GetDataSize(image, this);
-            var dataStream = new MemoryStream(capacity);
+            // i = intensity, a = alpha
+            byte i = FormatUtility.Rgba32ToIntensity8(pixel);
+            byte a = pixel.A;
 
-            using (var writer = new BinaryWriter(dataStream))
-            {
-                for (int y = 0; y < image.Height; y++)
-                {
-                    for (int x = 0; x < image.Width; x++)
-                    {
-                        var pixel = image[x, y];
+            byte ia8 = (byte)(
+                ((i >> 0) & 0b11110000) +
+                ((a >> 4) & 0b00001111));
 
-                        // i = intensity, a = alpha
-                        byte i = FormatUtility.Rgba32ToIntensity8(pixel);
-                        byte a = pixel.A;
-
-                        byte ia8 = (byte)(
-                            ((i >> 0) & 0b11110000) + 
-                            ((a >> 4) & 0b00001111));
-
-                        writer.Write(ia8);
-                    }
-                }
-            }
-
-            return dataStream;
+            writer.Write(ia8);
         }
 
-        public override Image<Rgba32> ConvertSprite(Sprite sprite)
+        public override Image<Rgba32> ReadSprite(Sprite sprite)
         {
             throw new NotImplementedException();
         }
