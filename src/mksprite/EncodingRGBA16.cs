@@ -22,10 +22,10 @@ namespace MakeSprite
                     {
                         var pixel = image[x, y];
                         ushort rgba16 = (ushort)(
-                            ((pixel.R << 8) & 0b11110000_00000000) +
-                            ((pixel.G << 4) & 0b00001111_00000000) +
-                            ((pixel.B >> 0) & 0b00000000_11110000) +
-                            ((pixel.A >> 4) & 0b00000000_00001111));
+                            ((pixel.R << 8) & 0b11111000_00000000) +
+                            ((pixel.G << 3) & 0b00000111_11000000) +
+                            ((pixel.B >> 2) & 0b00000000_00111110) +
+                            ((pixel.A >> 7) & 0b00000000_00000001));
                         writer.Write(rgba16);
                     }
                 }

@@ -2,8 +2,8 @@
 {
     public enum OperationMode
     {
-        interactive = 0,
+        file = 0,
         directory = 1,
-        file = 2,
+        interactive = 2,
     }
 }
