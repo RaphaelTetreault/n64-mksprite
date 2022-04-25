@@ -115,12 +115,32 @@ namespace MakeSprite
             throw new NotImplementedException();
         }
 
-        // TODO: implement resampler selection
-        public static void ResizeImage(Image image, Options options)
+
+
+        public static string GetFileOutputPath(string inputFilePath, IFileType outputFile, Options options)
         {
-            int w = options.ResizeW != null ? (int)options.ResizeW : image.Width;
-            int h = options.ResizeH != null ? (int)options.ResizeH : image.Height;
-            image.Mutate(ipc => ipc.Resize(w, h));
+            bool hasOutputPath = !string.IsNullOrEmpty(options.OutputPath);
+
+            string directory = !hasOutputPath
+                ? Path.GetDirectoryName(inputFilePath)
+                : options.OutputPath;
+
+            if (hasOutputPath)
+            {
+                string beyondRootPath = inputFilePath.Replace(options.InputPath, "");
+                string subDirectories = Path.GetDirectoryName(beyondRootPath);
+
+                var hasSubdirectories = !string.IsNullOrEmpty(subDirectories);
+                if (hasSubdirectories)
+                    directory = Path.Combine(directory, subDirectories);
+
+                var directoryPathDoesNotExists = !Directory.Exists(directory);
+                if (directoryPathDoesNotExists)
+                    Directory.CreateDirectory(directory);
+            }
+
+            string outputPath = $"{directory}/{outputFile.FileName}{outputFile.FileExtension}";
+            return outputPath;
         }
 
         public static Sprite LoadImageAsSprite(string filePath, Options options)
@@ -153,34 +173,13 @@ namespace MakeSprite
             return sprite;
         }
 
-
-        public static string GetFileOutputPath(string inputFilePath, IFileType outputFile, Options options)
+        public static void ResizeImage(Image image, Options options)
         {
-            bool hasOutputPath = !string.IsNullOrEmpty(options.OutputPath);
-
-            string directory = !hasOutputPath
-                ? Path.GetDirectoryName(inputFilePath)
-                : options.OutputPath;
-
-            if (hasOutputPath)
-            {
-                string beyondRootPath = inputFilePath.Replace(options.InputPath, "");
-                string subDirectories = Path.GetDirectoryName(beyondRootPath);
-
-                var hasSubdirectories = !string.IsNullOrEmpty(subDirectories);
-                if (hasSubdirectories)
-                    directory = Path.Combine(directory, subDirectories);
-
-                var directoryPathDoesNotExists = !Directory.Exists(directory);
-                if (directoryPathDoesNotExists)
-                    Directory.CreateDirectory(directory);
-            }
-
-            string outputPath = $"{directory}/{outputFile.FileName}{outputFile.FileExtension}";
-            return outputPath;
+            var resampler = options.Resampler;
+            int w = options.ResizeW != null ? (int)options.ResizeW : image.Width;
+            int h = options.ResizeH != null ? (int)options.ResizeH : image.Height;
+            image.Mutate(ipc => ipc.Resize(w, h, resampler));
         }
-
-
 
         public static void SaveFile<TBinarySerializable>(TBinarySerializable value, string inputFilePath, Options options)
             where TBinarySerializable : IBinaryFileType, IBinarySerializable

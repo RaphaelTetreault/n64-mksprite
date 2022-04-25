@@ -1,4 +1,7 @@
 ﻿using CommandLine;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Processing.Processors.Transforms;
 
 namespace MakeSprite
 {
@@ -97,10 +100,14 @@ namespace MakeSprite
         [Option("resizeH", Required = false, HelpText = Help.ResizeH)]
         public int? ResizeH { get; set; }
 
+        [Option("resampler", Required = false, HelpText = "")]
+        public ResamplerType ResamplerType { get; set; } = ResamplerType.Bicubic;
+
 
         public SearchOption SearchOption => SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
         public bool UserWantsResize => ResizeW != null && ResizeH != null;
         public Format Format => Enum.Parse<Format>(FormatStr, true);
+        public IResampler Resampler => GetResampler(ResamplerType);
 
 
         public void PrintState()
@@ -118,7 +125,33 @@ namespace MakeSprite
             Console.WriteLine($"{nameof(SlicesV)}: {SlicesV}");
             Console.WriteLine($"{nameof(ResizeW)}: {ResizeW}");
             Console.WriteLine($"{nameof(ResizeH)}: {ResizeH}");
+            Console.WriteLine($"{nameof(ResamplerType)}: {ResamplerType}");
         }
-    }
 
+        public IResampler GetResampler(ResamplerType resampler)
+        {
+            switch (resampler)
+            {
+                case ResamplerType.Bicubic: return KnownResamplers.Bicubic;
+                case ResamplerType.Box: return KnownResamplers.Box;
+                case ResamplerType.CatmullRom: return KnownResamplers.CatmullRom;
+                case ResamplerType.Hermite: return KnownResamplers.Hermite;
+                case ResamplerType.Lanczos2: return KnownResamplers.Lanczos2;
+                case ResamplerType.Lanczos3: return KnownResamplers.Lanczos3;
+                case ResamplerType.Lanczos5: return KnownResamplers.Lanczos5;
+                case ResamplerType.Lanczos8: return KnownResamplers.Lanczos8;
+                case ResamplerType.MitchellNetravali: return KnownResamplers.MitchellNetravali;
+                case ResamplerType.NearestNeighbor: return KnownResamplers.NearestNeighbor;
+                case ResamplerType.Robidoux: return KnownResamplers.Robidoux;
+                case ResamplerType.RobidouxSharp: return KnownResamplers.RobidouxSharp;
+                case ResamplerType.Spline: return KnownResamplers.Spline;
+                case ResamplerType.Triangle: return KnownResamplers.Triangle;
+                case ResamplerType.Welch: return KnownResamplers.Welch;
+
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
+    }
 }
