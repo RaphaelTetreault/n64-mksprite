@@ -82,14 +82,13 @@ namespace MakeSprite
             var files = Directory.GetFiles(options.InputPath, options.SearchPattern, options.SearchOption);
             if (files.IsNullOrEmpty())
             {
-                Console.WriteLine($"Pattern found no matches in path provided!");
+                VerboseConsole.WriteLine($"Pattern found no matches in path provided!");
                 VerboseConsole.WriteLine($"\t{nameof(options.InputPath)}:{options.InputPath}");
                 VerboseConsole.WriteLine($"\t{nameof(options.SearchPattern)}:{options.SearchPattern}");
                 VerboseConsole.WriteLine($"\t{nameof(options.SearchSubdirectories)}:{options.SearchSubdirectories}");
-                return;
             }
 
-            VerboseConsole.WriteLine($"Found {files.Length} files.");
+            Console.WriteLine($"Found {files.Length} files.");
             foreach (var file in files)
             {
                 var sprite = LoadImageAsSprite(file, options);
@@ -165,10 +164,14 @@ namespace MakeSprite
             if (options.UserWantsResize)
                 ResizeImage(image, options);
 
+            var fileName = options.RemoveAllExtensions
+                ? Path.GetFileName(filePath).Split('.')[0]
+                : Path.GetFileNameWithoutExtension(filePath);
+
             // Create sprite using image and option parameters
             var sprite = new Sprite()
             {
-                FileName = Path.GetFileNameWithoutExtension(filePath),
+                FileName = fileName,
                 Width = (ushort)image.Width,
                 Height = (ushort)image.Height,
                 Format = options.Format,

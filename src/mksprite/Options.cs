@@ -22,12 +22,13 @@ namespace MakeSprite
                 "(true|false) Whether or not to search subdirectories for files when using the directory mode.";
 
             public const string SearchPattern =
-                "The search pattern used to find files. Ex: \"*.png\"";
+                "The search pattern used to find files.\n\tEx: \"*.png\"";
+
+            public const string RemoveAllExtensions =
+                "Removes all extensions from input file. True by default.\n\tEx: \"spr.ci8.png\" -> \"spr.sprite\" ";
 
             public const string Mode =
                 "The mode of operation for this tool.";
-
-            public const string ex = $"{SearchPattern}";
 
             public static readonly string FormatRO =
                 $"The desired output sprite format." +
@@ -81,8 +82,8 @@ namespace MakeSprite
         [Option("searchPattern", Required = false, HelpText = Help.SearchPattern)]
         public string SearchPattern { get; set; } = string.Empty;
 
-        //[Option("createDirs", Required = false, HelpText = "")]
-        //public bool CreateDirectories { get; set; }
+        [Option("rmExts", Required = false, HelpText = Help.SearchPattern)]
+        public bool RemoveAllExtensions { get; set; }
 
         [Option('m', "mode", Required = false, HelpText = Help.Mode)]
         public OperationMode Mode { get; set; }
