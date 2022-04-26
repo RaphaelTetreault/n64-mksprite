@@ -6,11 +6,11 @@ set output=".\filesystem"
 :: This example's usage
 :: 1 - 				Call 'MakeSprite' program
 :: 2 - [-m 0|1|2]		Set mode. Mode 1 is directory mode
-:: 3 - [-i <directory>]		Pass input directory to process
-:: 4 - [-o <directory>]		Pass output directory to place processed files into. Relative directory is preserved from root / input path.
-:: 5 - [--searchSubdirs]	Search subdirectories beneath input directory
-:: 6 - [--searchPattern]	The search query to find files in input directory
-:: 7 - [-f <sprite format>]	The sprite format to convert to. [rgba32|rgba16|ci8|ci4|i8|i4|ia8|ia4]
+:: 3 - [-i <dir>]		Pass input directory to process
+:: 4 - [-o <dir>]		Pass output directory to place processed files into. Relative directory is preserved from root / input path.
+:: 5 - [--searchSubdirs <dir>]	Search subdirectories beneath input directory
+:: 6 - [--searchPattern <dir>]	The search query to find files in input directory
+:: 7 - [-f <format>]		The sprite format to convert to. [rgba32|rgba16|ci8|ci4|i8|i4|ia8|ia4]
 :: 8 - [--rmExts true|false]	Remove all extensions on processed files. Set on here since this example tags images with format extension.
 
 %mksprite% -m 1 -i %input% -o %output% -f rgba32 --searchSubdirs=true --searchPattern="*.rgba32*.png" --rmExts=true
