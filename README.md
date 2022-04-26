@@ -33,8 +33,9 @@ A C# implementation of libdragon's mksprite tool with a few more bells and whist
 ## Dependencies
 
 * .NET 6.0
-* [ImageSharp](https://github.com/SixLabors/ImageSharp) for image processing
 * [CommandLineParser](https://github.com/commandlineparser/commandline) for capturing command line arguments
+* [ImageSharp](https://github.com/SixLabors/ImageSharp) for image processing
+* [Manifold.Core](https://github.com/RaphaelTetreault/Manifold.Core) for handling binary
 
 ## Credits
 
@@ -42,6 +43,6 @@ Written by Raphaël Tétreault.
 
 Special thanks to the following for support on the N64Brew Discord:
 
-- Rasky
 - Meeq
 - Mielke
+- Rasky
