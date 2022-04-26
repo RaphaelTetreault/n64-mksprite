@@ -1,5 +1,5 @@
 # n64-mksprite
-A C# implementation of of libdragon's mksprite tool with a few more bells and whistles.
+A C# implementation of libdragon's mksprite tool with a few more bells and whistles.
 
 ## Operation
 
