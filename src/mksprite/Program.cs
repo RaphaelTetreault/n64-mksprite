@@ -168,7 +168,7 @@ namespace MakeSprite
 
         public static void ResizeImage(Image image, Options options)
         {
-            var resampler = options.Resampler;
+            var resampler = options.IResampler;
             int w = options.ResizeW != null ? (int)options.ResizeW : image.Width;
             int h = options.ResizeH != null ? (int)options.ResizeH : image.Height;
             image.Mutate(ipc => ipc.Resize(w, h, resampler));

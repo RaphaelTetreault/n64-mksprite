@@ -63,6 +63,9 @@ namespace MakeSprite
 
             public const string ResizeH =
                 "Resize image height";
+
+            public const string Resampler =
+                "The resampler to use when scaling images.";
         }
 
 
@@ -104,14 +107,16 @@ namespace MakeSprite
         [Option("resizeH", Required = false, HelpText = Help.ResizeH)]
         public int? ResizeH { get; set; }
 
-        [Option("resampler", Required = false, HelpText = "")]
-        public ResamplerType ResamplerType { get; set; } = ResamplerType.Bicubic;
+        [Option("resampler", Required = false, HelpText = Help.Resampler)]
+        public string ResamplerStr { get; set; } = "Bicubic";
 
 
         public SearchOption SearchOption => SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
         public bool UserWantsResize => ResizeW != null && ResizeH != null;
         public Format Format => Enum.Parse<Format>(FormatStr, true);
-        public IResampler Resampler => GetResampler(ResamplerType);
+        public ResamplerType Resampler => Enum.Parse<ResamplerType>(ResamplerStr, true);
+
+        public IResampler IResampler => GetResampler(Resampler);
 
 
         public void PrintState()
@@ -129,7 +134,8 @@ namespace MakeSprite
             Console.WriteLine($"{nameof(SlicesV)}: {SlicesV}");
             Console.WriteLine($"{nameof(ResizeW)}: {ResizeW}");
             Console.WriteLine($"{nameof(ResizeH)}: {ResizeH}");
-            Console.WriteLine($"{nameof(ResamplerType)}: {ResamplerType}");
+            Console.WriteLine($"{nameof(Resampler)}: {Resampler}");
+            Console.WriteLine($"{nameof(RemoveAllExtensions)}: {RemoveAllExtensions}");
         }
 
         public IResampler GetResampler(ResamplerType resampler)
