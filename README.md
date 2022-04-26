@@ -19,6 +19,17 @@ A C# implementation of of libdragon's mksprite tool with a few more bells and wh
 |               | --resampler     | [resampler] | bicubic | The resampler to use when scaling images. Argument is case-insensitive. Resamplers: Bicubic, Box, CatmullRom, Hermite, Lanczos2, Lanczos3, Lanczos5, Lanczos8, MitchellNetravali, NearestNeighbor, Robidoux, RobidouxSharp, Spline, Triangle, Welch. |
 |               | --rmExts        | bool        | False   | Remove all input files' extensions. Yields files formated as ".sprite" |
 
+## Supported Formats
+
+- Bmp
+- Gif
+- Jpeg
+- Pbm
+- Png
+- Tiff
+- Tga
+- WebP
+
 ## Dependencies
 
 * .NET 6.0
