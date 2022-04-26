@@ -3,7 +3,6 @@
     public enum Format : byte
     {
         None = 0,
-
         RGBA32,
         RGBA16,
         CI8,

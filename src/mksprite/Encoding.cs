@@ -3,12 +3,12 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace MakeSprite
 {
-    public abstract class N64Encoding
+    public abstract class Encoding
     {
         public abstract int BitsPerPixel { get; }
         public abstract Format Format { get; }
 
-        public abstract Image<Rgba32> ReadSprite(Sprite sprite);
+        public abstract Image<Rgba32> ReadSprite(BinaryReader binaryReader);
 
         internal abstract void WritePixel(BinaryWriter writer, Rgba32 pixel);
 
@@ -39,7 +39,7 @@ namespace MakeSprite
             }
         }
 
-        public static int GetDataSize(Image<Rgba32> bitmap, N64Encoding encoding)
+        public static int GetDataSize(Image<Rgba32> bitmap, Encoding encoding)
         {
             var width = bitmap.Width;
             var height = bitmap.Height;

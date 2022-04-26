@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MakeSprite
 {
-    internal abstract class N64ColorIndexEncoding : N64Encoding
+    internal abstract class ColorIndexEncoding : Encoding
     {
         public abstract int PaletteSize { get; }
 

@@ -17,7 +17,7 @@ namespace MakeSprite
 
 
         // TODO: move elsewhere
-        public static N64Encoding FormatToEncoding(Format format)
+        public static Encoding FormatToEncoding(Format format)
         {
             switch (format)
             {

@@ -39,8 +39,7 @@ namespace MakeSprite
             {
                 case OperationMode.interactive:
                     OpModeInteractive(options);
-                    throw new NotImplementedException();
-                //break;
+                    break;
                 case OperationMode.directory:
                     OpModeDirectory(options);
                     break;
@@ -167,8 +166,8 @@ namespace MakeSprite
                 BitDepth = FormatUtility.FormatToBitsPerPixel(options.Format),
                 SlicesH = checked((byte)options.SlicesH),
                 SlicesV = checked((byte)options.SlicesV),
+                Image = image,
             };
-            sprite.SetImage(image, options);
 
             return sprite;
         }

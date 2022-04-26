@@ -20,7 +20,7 @@ namespace MakeSprite
         private Format format;
         private byte slicesH;
         private byte slicesV;
-        private byte[] data = new byte[0];
+        private Image<Rgba32> image;
 
         public ushort Width { get => width; set => width = value; }
         public ushort Height { get => height; set => height = value; }
@@ -28,8 +28,8 @@ namespace MakeSprite
         public Format Format { get => format; set => format = value; }
         public byte SlicesH { get => slicesH; set => slicesH = value; }
         public byte SlicesV { get => slicesV; set => slicesV = value; }
-        public byte[] Data => data;
-        public int Size => (int)(width * height * bitDepth / 32.0);
+        public int Size => (int)(width * height * bitDepth / 8.0);
+        public Image<Rgba32> Image { get => image; set => image = value; }
 
         public Endianness Endianness => Endianness.BigEndian;
         public string FileExtension => ".sprite";
@@ -44,7 +44,9 @@ namespace MakeSprite
             reader.Read(ref format);
             reader.Read(ref slicesH);
             reader.Read(ref slicesV);
-            reader.Read(ref data, Size);
+            
+            var encoding = FormatUtility.FormatToEncoding(Format);
+            image = encoding.ReadSprite(reader);
         }
 
         public void Serialize(EndianBinaryWriter writer)
@@ -55,25 +57,9 @@ namespace MakeSprite
             writer.Write(format);
             writer.Write(slicesH);
             writer.Write(slicesV);
-            writer.Write(data);
-        }
 
-        public void SetImage(Image<Rgba32> image, Options options)
-        {
-            var encoding = FormatUtility.FormatToEncoding(options.Format);            
-            var stream = new MemoryStream();
-            using (var writer = new EndianBinaryWriter(stream, Endianness))
-            {
-                encoding.WriteSprite(writer, image, options.SlicesH, options.SlicesV);
-                data = stream.ToArray();
-            }
-        }
-
-        public Image<Rgba32> GetImage()
-        {
-            var encoding = FormatUtility.FormatToEncoding(format);
-            var bitmap = encoding.ReadSprite(this);
-            return bitmap;
+            var encoding = FormatUtility.FormatToEncoding(Format);
+            encoding.WriteSprite(writer, image, SlicesH, slicesV);
         }
 
     }

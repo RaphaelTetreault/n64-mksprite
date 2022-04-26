@@ -3,7 +3,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace MakeSprite
 {
-    internal class EncodingRGBA16 : N64Encoding
+    internal class EncodingRGBA16 : Encoding
     {
         public override int BitsPerPixel => 16;
         public override Format Format => Format.RGBA16;
@@ -20,7 +20,7 @@ namespace MakeSprite
             writer.Write(rgba16);
         }
 
-        public override Image<Rgba32> ReadSprite(Sprite sprite)
+        public override Image<Rgba32> ReadSprite(BinaryReader reader)
         {
             throw new NotImplementedException();
         }

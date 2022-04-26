@@ -6,7 +6,7 @@ using SixLabors.ImageSharp.Processing.Processors.Quantization;
 
 namespace MakeSprite
 {
-    internal class EncodingCI8 : N64ColorIndexEncoding
+    internal class EncodingCI8 : ColorIndexEncoding
     {
         public override int BitsPerPixel => 8;
         public override Format Format => Format.CI8;
@@ -52,7 +52,7 @@ namespace MakeSprite
             }
         }
 
-        public override Image<Rgba32> ReadSprite(Sprite sprite)
+        public override Image<Rgba32> ReadSprite(BinaryReader reader)
         {
             throw new NotImplementedException();
         }
