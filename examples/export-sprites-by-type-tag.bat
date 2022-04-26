@@ -8,16 +8,16 @@ set output=".\filesystem"
 :: 2 - [-m 0|1|2]		Set mode. Mode 1 is directory mode
 :: 3 - [-i <directory>]		Pass input directory to process
 :: 4 - [-o <directory>]		Pass output directory to place processed files into. Relative directory is preserved from root / input path.
-:: 5 - [--searchSubdirs]		Search subdirectories beneath input directory
-:: 6 - [--searchPattern]		The search query to find files in input directory
+:: 5 - [--searchSubdirs]	Search subdirectories beneath input directory
+:: 6 - [--searchPattern]	The search query to find files in input directory
 :: 7 - [-f <sprite format>]	The sprite format to convert to. [rgba32|rgba16|ci8|ci4|i8|i4|ia8|ia4]
 :: 8 - [--rmExts true|false]	Remove all extensions on processed files. Set on here since this example tags images with format extension.
 
-%mksprite% -m 1 -i %input% -o %output% --searchSubdirs=true --searchPattern="*.rgba32*.png" -f rgba32 --rmExts=true
-%mksprite% -m 1 -i %input% -o %output% --searchSubdirs=true --searchPattern="*.rgba16*.png" -f rgba16 --rmExts=true
-%mksprite% -m 1 -i %input% -o %output% --searchSubdirs=true --searchPattern="*.ci8*.png"    -f ci8    --rmExts=true
-%mksprite% -m 1 -i %input% -o %output% --searchSubdirs=true --searchPattern="*.i8*.png"     -f i8     --rmExts=true
-%mksprite% -m 1 -i %input% -o %output% --searchSubdirs=true --searchPattern="*.ia8*.png"    -f ia8    --rmExts=true
-%mksprite% -m 1 -i %input% -o %output% --searchSubdirs=true --searchPattern="*.ci4*.png"    -f ci4    --rmExts=true
-%mksprite% -m 1 -i %input% -o %output% --searchSubdirs=true --searchPattern="*.i4*.png"     -f i4     --rmExts=true
-%mksprite% -m 1 -i %input% -o %output% --searchSubdirs=true --searchPattern="*.ia4*.png"    -f ia4    --rmExts=true
+%mksprite% -m 1 -i %input% -o %output% -f rgba32 --searchSubdirs=true --searchPattern="*.rgba32*.png" --rmExts=true
+%mksprite% -m 1 -i %input% -o %output% -f rgba16 --searchSubdirs=true --searchPattern="*.rgba16*.png" --rmExts=true
+%mksprite% -m 1 -i %input% -o %output% -f ci8    --searchSubdirs=true --searchPattern="*.ci8*.png"    --rmExts=true
+%mksprite% -m 1 -i %input% -o %output% -f i8     --searchSubdirs=true --searchPattern="*.i8*.png"     --rmExts=true
+%mksprite% -m 1 -i %input% -o %output% -f ia8    --searchSubdirs=true --searchPattern="*.ia8*.png"    --rmExts=true
+%mksprite% -m 1 -i %input% -o %output% -f ci4    --searchSubdirs=true --searchPattern="*.ci4*.png"    --rmExts=true
+%mksprite% -m 1 -i %input% -o %output% -f i4     --searchSubdirs=true --searchPattern="*.i4*.png"     --rmExts=true
+%mksprite% -m 1 -i %input% -o %output% -f ia4    --searchSubdirs=true --searchPattern="*.ia4*.png"    --rmExts=true
