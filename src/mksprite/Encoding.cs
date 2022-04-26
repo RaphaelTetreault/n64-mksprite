@@ -8,6 +8,7 @@ namespace MakeSprite
         public abstract int BitsPerPixel { get; }
         public abstract Format Format { get; }
 
+
         public abstract Image<Rgba32> ReadSprite(BinaryReader binaryReader);
 
         internal abstract void WriteColor(BinaryWriter writer, Rgba32 color);

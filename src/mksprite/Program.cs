@@ -61,14 +61,23 @@ namespace MakeSprite
                 return;
             }
 
-            var definedOutputPath = !string.IsNullOrEmpty(options.OutputPath);
-            var outputDoesNotExist = !Directory.Exists(options.OutputPath);
-            if (definedOutputPath && outputDoesNotExist)
-            {
-                Console.WriteLine($"Path provided is not a valid directory!");
-                VerboseConsole.WriteLine($"\t{nameof(options.OutputPath)}:{options.OutputPath}");
-                return;
-            }
+            //var definedOutputPath = !string.IsNullOrEmpty(options.OutputPath);
+            //var outputDoesNotExist = !Directory.Exists(options.OutputPath);
+            //if (definedOutputPath && outputDoesNotExist)
+            //{
+            //    var autoCreateDirectory = options.CreateDirectories;
+            //    if (autoCreateDirectory)
+            //    {
+            //        Directory.CreateDirectory(options.OutputPath);
+            //        VerboseConsole.WriteLine($"Created directory: {options.OutputPath}");
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine($"Path provided is not a valid directory!");
+            //        VerboseConsole.WriteLine($"\t{nameof(options.OutputPath)}:{options.OutputPath}");
+            //        return;
+            //    }
+            //}
 
             var files = Directory.GetFiles(options.InputPath, options.SearchPattern, options.SearchOption);
             if (files.IsNullOrEmpty())
@@ -114,12 +123,19 @@ namespace MakeSprite
             bool hasOutputPath = !string.IsNullOrEmpty(options.OutputPath);
 
             string directory = !hasOutputPath
-                ? Path.GetDirectoryName(inputFilePath)
-                : options.OutputPath;
+                ? Path.GetDirectoryName(inputFilePath)  // Get file's directory
+                : Path.GetFullPath(options.OutputPath); // Get specified output directory
 
             if (hasOutputPath)
             {
-                string beyondRootPath = inputFilePath.Replace(options.InputPath, "");
+                // TODO: explain better
+                // If 'file' mode, this just cuts off all dirs, nothing happens.
+                // If 'directory' mode, the input path may be shorter than the file paths
+                // found (eg: in="a/b/", out="x/y/", pattern="*.png", finds file "a/b/c/spr.png").
+                // The replace call trims the file path ("c/spr.png"). Code then grabs the dirs ("c/"),
+                // and appends it to the output dir (now we have "x/y/c/"). It then grabs the file name
+                // ("spr.png") and appends it, so we get the final output destination ("x/y/c/spr.png").
+                string beyondRootPath = inputFilePath.Replace(directory, "");
                 string subDirectories = Path.GetDirectoryName(beyondRootPath);
 
                 var hasSubdirectories = !string.IsNullOrEmpty(subDirectories);

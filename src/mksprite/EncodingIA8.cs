@@ -5,7 +5,6 @@ namespace MakeSprite
 {
     internal class EncodingIA8 : Encoding
     {
-
         public override int BitsPerPixel => 8;
         public override Format Format => Format.IA8;
 

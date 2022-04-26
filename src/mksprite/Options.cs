@@ -81,6 +81,9 @@ namespace MakeSprite
         [Option("searchPattern", Required = false, HelpText = Help.SearchPattern)]
         public string SearchPattern { get; set; } = string.Empty;
 
+        //[Option("createDirs", Required = false, HelpText = "")]
+        //public bool CreateDirectories { get; set; }
+
         [Option('m', "mode", Required = false, HelpText = Help.Mode)]
         public OperationMode Mode { get; set; }
 
