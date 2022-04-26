@@ -22,7 +22,7 @@ namespace MakeSprite
         public void WriteSprite(BinaryWriter writer, Image<Rgba32> image)
             => WriteSprite(writer, image, 0, 0, image.Width, image.Height);
 
-        public void WriteSprite(BinaryWriter writer, Image<Rgba32> image, int slicesH, int slicesV)
+        public virtual void WriteSprite(BinaryWriter writer, Image<Rgba32> image, int slicesH, int slicesV)
         {
             int width = image.Width / slicesH;
             int height = image.Height / slicesV;

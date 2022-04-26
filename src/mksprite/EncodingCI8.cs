@@ -6,27 +6,50 @@ using SixLabors.ImageSharp.Processing.Processors.Quantization;
 
 namespace MakeSprite
 {
-    internal class EncodingCI8 : N64Encoding
+    internal class EncodingCI8 : N64ColorIndexEncoding
     {
         public override int BitsPerPixel => 8;
         public override Format Format => Format.CI8;
+        public override int PaletteSize => 256;
 
-
-        internal override void WritePixel(BinaryWriter writer, Rgba32 pixel)
+        public override void WriteIndexes(BinaryWriter writer, Image<Rgba32> image, int originX, int originY, int width, int height)
         {
-            throw new NotImplementedException();
+            for (int y = originY; y < originY + height; y++)
+            {
+                int indexY = y * image.Width;
+                for (int x = originX; x < originX + width; x++)
+                {
+                    int index = x + indexY;
+                    writer.Write(index);
+                }
+            }
         }
 
         public override void WriteSprite(BinaryWriter writer, Image<Rgba32> image, int originX, int originY, int width, int height)
         {
-            Temp(writer, image, 16);
+            var indexedImage = IndexedImage.CreateIndexedImage(image, PaletteSize);
+            WritePalette(writer, indexedImage.Palette);
+            WriteIndexes(writer, image, originX, originY, width, height);
+        }
 
-            //for (int y = originY; y < originY + height; y++)
-            //{
-            //    for (int x = originX; x < originX + width; x++)
-            //    {
-            //    }
-            //}
+        public override void WriteSprite(BinaryWriter writer, Image<Rgba32> image, int slicesH, int slicesV)
+        {
+            var indexedImage = IndexedImage.CreateIndexedImage(image, PaletteSize);
+            WritePalette(writer, indexedImage.Palette);
+
+            int width = image.Width / slicesH;
+            int height = image.Height / slicesV;
+
+            for (int v = 0; v < slicesV; v++)
+            {
+                int originY = v * height;
+
+                for (int h = 0; h < slicesH; h++)
+                {
+                    int originX = h * width;
+                    WriteIndexes(writer, image, originX, originY, width, height);
+                }
+            }
         }
 
         public override Image<Rgba32> ReadSprite(Sprite sprite)
@@ -35,34 +58,6 @@ namespace MakeSprite
         }
 
 
-        public void Temp(BinaryWriter writer, Image<Rgba32> image, int maxColors)
-        {
-            // init some settings
-            var configuration = new Configuration() { };
-            var quantizerOptions = new QuantizerOptions() { MaxColors = maxColors, }; // See also: dithers
-            var quantizer = new WuQuantizer(quantizerOptions);
-            var rgba32Quantizer = quantizer.CreatePixelSpecificQuantizer<Rgba32>(configuration);
 
-            // build palette and indices
-            var frame = image.Frames.RootFrame;
-            var indexedImageFrame = rgba32Quantizer.BuildPaletteAndQuantizeFrame(frame, frame.Bounds());
-            var palette = indexedImageFrame.Palette.ToArray();
-
-            // debug
-            Console.WriteLine("Palette");
-            for (int i = 0; i < palette.Length; i++)
-                Console.WriteLine($"{i:x2} - {palette[i].ToHex()}");
-
-            Console.WriteLine("Indexes");
-            for (int y = 0; y < image.Height; y++)
-            {
-                var row = indexedImageFrame.GetWritablePixelRowSpanUnsafe(y);
-                for (int x = 0; x < image.Width; x++)
-                {
-                    Console.Write($"{row[x]:x2} ");
-                }
-                Console.WriteLine();
-            }
-        }
     }
 }

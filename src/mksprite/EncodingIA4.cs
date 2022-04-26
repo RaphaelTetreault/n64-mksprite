@@ -17,9 +17,9 @@ namespace MakeSprite
         {
             for (int y = originY; y < originY + height; y++)
             {
-                for (int x = originX; x < originX + width; x++)
+                // process 2 pixels at a time
+                for (int x = originX; x < originX + width; x += 2)
                 {
-                    // process 2 pixels at a time
                     var pixel0 = image[x + 0, y];
                     var pixel1 = image[x + 1, y];
 
