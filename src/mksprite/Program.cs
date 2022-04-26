@@ -61,24 +61,6 @@ namespace MakeSprite
                 return;
             }
 
-            //var definedOutputPath = !string.IsNullOrEmpty(options.OutputPath);
-            //var outputDoesNotExist = !Directory.Exists(options.OutputPath);
-            //if (definedOutputPath && outputDoesNotExist)
-            //{
-            //    var autoCreateDirectory = options.CreateDirectories;
-            //    if (autoCreateDirectory)
-            //    {
-            //        Directory.CreateDirectory(options.OutputPath);
-            //        VerboseConsole.WriteLine($"Created directory: {options.OutputPath}");
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine($"Path provided is not a valid directory!");
-            //        VerboseConsole.WriteLine($"\t{nameof(options.OutputPath)}:{options.OutputPath}");
-            //        return;
-            //    }
-            //}
-
             var files = Directory.GetFiles(options.InputPath, options.SearchPattern, options.SearchOption);
             if (files.IsNullOrEmpty())
             {
