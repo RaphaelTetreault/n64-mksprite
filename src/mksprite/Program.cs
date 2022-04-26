@@ -101,35 +101,48 @@ namespace MakeSprite
 
         public static string GetFileOutputPath(string inputFilePath, IFileType outputFile, Options options)
         {
+            string inputPath = Path.GetFullPath(inputFilePath);
+            string outputPath = Path.GetFullPath(options.OutputPath);
             bool hasOutputPath = !string.IsNullOrEmpty(options.OutputPath);
 
-            string directory = !hasOutputPath
-                ? Path.GetDirectoryName(inputFilePath)  // Get file's directory
-                : Path.GetFullPath(options.OutputPath); // Get specified output directory
+            string directory = hasOutputPath
+                ? Path.GetFullPath(outputPath)      // Get specified output directory
+                : Path.GetDirectoryName(inputPath); // Get file's directory
 
-            if (hasOutputPath)
+            bool isDirectoryMode = options.Mode == OperationMode.directory;
+            if (hasOutputPath && isDirectoryMode)
             {
-                // TODO: explain better
-                // If 'file' mode, this just cuts off all dirs, nothing happens.
-                // If 'directory' mode, the input path may be shorter than the file paths
-                // found (eg: in="a/b/", out="x/y/", pattern="*.png", finds file "a/b/c/spr.png").
-                // The replace call trims the file path ("c/spr.png"). Code then grabs the dirs ("c/"),
-                // and appends it to the output dir (now we have "x/y/c/"). It then grabs the file name
-                // ("spr.png") and appends it, so we get the final output destination ("x/y/c/spr.png").
-                string beyondRootPath = inputFilePath.Replace(directory, "");
+                // Make sure we are not using relative file paths here
+                var inputFile = Path.GetFullPath(inputFilePath);
+                var inputDirectory = Path.GetFullPath(options.InputPath);
+                var outputDirectory = Path.GetFullPath(options.OutputPath);
+
+                // GOAL remove any leading input path specified by the search method that found
+                //      this file in 'directory' mode.
+                // EX:
+                //      input   = "a/b/"
+                //      output  = "x/y/"
+                //      pattern = "*.png"
+                //      (found) = "a/b/c/spr.png"
+                //
+                // The Replace() call trims the file path.  ("c/spr.png").
+                // Code then grabs the directories          ("c/"),
+                // and appends it to the output directory.  ("x/y/c/").
+                // It then grabs the file name              ("spr.png")
+                // and appends it, and get the output.      ("x/y/c/spr.png")
+                string beyondRootPath = inputFile.Replace(inputDirectory, "");
                 string subDirectories = Path.GetDirectoryName(beyondRootPath);
+                // Set destination folder as root
+                // Simply add strings due to strange Path.Combine behaviour
+                // https://stackoverflow.com/questions/53102/why-does-path-combine-not-properly-concatenate-filenames-that-start-with-path-di
+                directory = outputDirectory + subDirectories;
 
-                var hasSubdirectories = !string.IsNullOrEmpty(subDirectories);
-                if (hasSubdirectories)
-                    directory = Path.Combine(directory, subDirectories);
-
-                var directoryPathDoesNotExists = !Directory.Exists(directory);
-                if (directoryPathDoesNotExists)
-                    Directory.CreateDirectory(directory);
+                // Ensure we have the directory path
+                Directory.CreateDirectory(directory);
             }
 
-            string outputPath = $"{directory}/{outputFile.FileName}{outputFile.FileExtension}";
-            return outputPath;
+            string destination = $"{directory}/{outputFile.FileName}{outputFile.FileExtension}";
+            return destination;
         }
 
         public static Sprite LoadImageAsSprite(string filePath, Options options)

@@ -32,8 +32,6 @@ namespace MakeSprite
 
             // PALETTE
             var palette = indexedImageFrame.Palette.ToArray();
-            if (palette == null)
-                throw new NullReferenceException();
             VerboseConsole.WriteLine("Palette");
             for (int i = 0; i < palette.Length; i++)
                 VerboseConsole.WriteLine($"{i:x2} - {palette[i].ToHex()}");

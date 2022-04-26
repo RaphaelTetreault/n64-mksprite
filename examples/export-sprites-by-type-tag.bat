@@ -1,7 +1,7 @@
 :: Set up variables
 set mksprite="D:\github\n64-mksprite\src\mksprite\bin\Debug\net6.0\mksprite.exe"
 set input= ".\spr"
-set output=".\filesystem"
+set output=".\filesystem\spr"
 
 :: This example's usage
 :: 1 - 				Call 'MakeSprite' program
