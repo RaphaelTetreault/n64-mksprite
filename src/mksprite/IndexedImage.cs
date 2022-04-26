@@ -6,14 +6,14 @@ namespace MakeSprite
 {
     internal class IndexedImage
     {
-        public int ColorDepth { get; }
+        public int PaletteSize { get; }
         public Rgba32[] Palette { get; }
         public byte[] Indexes { get; }
 
 
         public IndexedImage(Rgba32[] palette, byte[] indexes)
         {
-            ColorDepth = palette.Length;
+            PaletteSize = palette.Length;
             Palette = palette;
             Indexes = indexes;
         }
@@ -33,7 +33,7 @@ namespace MakeSprite
             // PALETTE
             var palette = indexedImageFrame.Palette.ToArray();
             if (palette == null)
-                throw new Exception();
+                throw new NullReferenceException();
             VerboseConsole.WriteLine("Palette");
             for (int i = 0; i < palette.Length; i++)
                 VerboseConsole.WriteLine($"{i:x2} - {palette[i].ToHex()}");

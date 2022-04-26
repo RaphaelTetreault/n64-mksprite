@@ -1,13 +1,6 @@
-﻿// Used libraries / NuGet packages:
-//      CommandLineParser
-//      ImageSharp
-
-using CommandLine;
+﻿using CommandLine;
 using Manifold;
 using Manifold.IO;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;

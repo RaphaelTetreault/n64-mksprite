@@ -10,13 +10,13 @@ namespace MakeSprite
 
         public abstract Image<Rgba32> ReadSprite(BinaryReader binaryReader);
 
-        internal abstract void WritePixel(BinaryWriter writer, Rgba32 pixel);
+        internal abstract void WriteColor(BinaryWriter writer, Rgba32 color);
 
         public virtual void WriteSprite(BinaryWriter writer, Image<Rgba32> image, int originX, int originY, int width, int height)
         {
             for (int y = originY; y < originY + height; y++)
                 for (int x = originX; x < originX + width; x++)
-                    WritePixel(writer, image[x, y]);
+                    WriteColor(writer, image[x, y]);
         }
 
         public void WriteSprite(BinaryWriter writer, Image<Rgba32> image)

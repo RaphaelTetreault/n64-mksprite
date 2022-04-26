@@ -125,7 +125,7 @@ namespace MakeSprite
             for (int i = 0; i < selected.Count; i++)
             {
                 var kvp = selected[i];
-                EncodingRGBA16.WritePixel(writer, kvp.Key);
+                EncodingRGBA16.WriteColor(writer, kvp.Key);
             }
 
 

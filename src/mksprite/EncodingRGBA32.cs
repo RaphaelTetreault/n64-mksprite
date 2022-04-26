@@ -9,12 +9,12 @@ namespace MakeSprite
         public override Format Format => Format.RGBA32;
 
 
-        internal override void WritePixel(BinaryWriter writer, Rgba32 pixel)
+        internal override void WriteColor(BinaryWriter writer, Rgba32 color)
         {
-            writer.Write(pixel.R);
-            writer.Write(pixel.G);
-            writer.Write(pixel.B);
-            writer.Write(pixel.A);
+            writer.Write(color.R);
+            writer.Write(color.G);
+            writer.Write(color.B);
+            writer.Write(color.A);
         }
 
         public override Image<Rgba32> ReadSprite(BinaryReader reader)

@@ -14,7 +14,7 @@ namespace MakeSprite
 
 
         // Hide this, we don't use it for CI formats
-        internal sealed override void WritePixel(BinaryWriter writer, Rgba32 pixel)
+        internal sealed override void WriteColor(BinaryWriter writer, Rgba32 color)
         {
             throw new InvalidOperationException();
         }
@@ -32,12 +32,12 @@ namespace MakeSprite
             for (int i = 0; i < palette.Length; i++)
             {
                 var color = palette[i];
-                FormatUtility.EncodingRGBA16.WritePixel(writer, color);
+                FormatUtility.EncodingRGBA16.WriteColor(writer, color);
             }
             // If not full palette, write black
             int padding = PaletteSize - palette.Length;
             for (int i = 0; i < padding; i++)
-                FormatUtility.EncodingRGBA16.WritePixel(writer, new Rgba32());
+                FormatUtility.EncodingRGBA16.WriteColor(writer, new Rgba32());
         }
 
 

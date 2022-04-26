@@ -8,7 +8,7 @@ namespace MakeSprite
         public override int BitsPerPixel => 4;
         public override Format Format => Format.IA4;
 
-        internal override void WritePixel(BinaryWriter writer, Rgba32 pixel)
+        internal override void WriteColor(BinaryWriter writer, Rgba32 color)
         {
             throw new InvalidOperationException();
         }

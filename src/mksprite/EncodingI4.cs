@@ -9,7 +9,7 @@ namespace MakeSprite
         public override Format Format => Format.I4;
 
 
-        internal override void WritePixel(BinaryWriter writer, Rgba32 pixel)
+        internal override void WriteColor(BinaryWriter writer, Rgba32 color)
         {
             throw new InvalidOperationException();
         }

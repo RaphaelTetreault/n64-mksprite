@@ -8,9 +8,9 @@ namespace MakeSprite
         public override int BitsPerPixel => 8;
         public override Format Format => Format.I8;
 
-        internal override void WritePixel(BinaryWriter writer, Rgba32 pixel)
+        internal override void WriteColor(BinaryWriter writer, Rgba32 color)
         {
-            byte intensity = FormatUtility.Rgba32ToIntensity8(pixel);
+            byte intensity = FormatUtility.Rgba32ToIntensity8(color);
             writer.Write(intensity);
         }
 
