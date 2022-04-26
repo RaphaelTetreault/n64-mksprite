@@ -2,12 +2,12 @@
   "profiles": {
     "mksprite": {
       "commandName": "Project",
-      "commandLineArgs": "-v true --inputPath=\"D:\\gitlab\\n64-test\\src\\filesystem\\spr\\test.png\"  --outputPath=\"D:\\gitlab\\n64-test\\ex\" --searchPattern=\"*.png\"  --searchSubdirs=true -m 2 -f ci4 --resizeW=32 --resizeH=32",
+      "commandLineArgs": "--verbose --inputPath=\"D:\\gitlab\\n64-test\\src\\filesystem\\spr\\test.png\"  --outputPath=\"D:\\gitlab\\n64-test\\ex\" --searchPattern=\"*.png\"  --searchSubdirs=true -m 2 -f ci4 --resizeW=32 --resizeH=32",
       "workingDirectory": "D:\\gitlab\\n64-test\\src"
     },
     "relative-paths": {
       "commandName": "Project",
-      "commandLineArgs": "-v --inputPath=\".\\spr\"  --outputPath=\".\\filesystem\\spr\" --searchPattern=\"*.png\"  --searchSubdirs -m 1 -f rgba32",
+      "commandLineArgs": "--verbose --inputPath=\".\\spr\"  --outputPath=\".\\filesystem\\spr\" --searchPattern=\"*.png\"  --searchSubdirs -m 1 -f rgba32",
       "workingDirectory": "D:\\gitlab\\n64-test\\src"
     }
   }

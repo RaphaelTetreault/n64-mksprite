@@ -69,7 +69,7 @@ namespace MakeSprite
         }
 
 
-        [Option('v', "verbose", Required = false, HelpText = Help.Verbose)]
+        [Option("verbose", Required = false, HelpText = Help.Verbose)]
         public bool Verbose { get; set; }
 
         [Option('i', "inputPath", Required = true, HelpText = Help.InputPath)]
@@ -79,10 +79,10 @@ namespace MakeSprite
         public string OutputPath { get; set; } = string.Empty;
 
 
-        [Option("searchSubdirs", Required = false, HelpText = Help.SearchSubdirectories)]
+        [Option('s', "searchSubdirs", Required = false, HelpText = Help.SearchSubdirectories)]
         public bool SearchSubdirectories { get; set; }
 
-        [Option("searchPattern", Required = false, HelpText = Help.SearchPattern)]
+        [Option('p', "searchPattern", Required = false, HelpText = Help.SearchPattern)]
         public string SearchPattern { get; set; } = string.Empty;
 
         [Option("rmExts", Required = false, HelpText = Help.SearchPattern)]
@@ -94,10 +94,10 @@ namespace MakeSprite
         [Option('f', "format", Required = false, HelpText = Help.Format)]
         public string FormatStr { get; set; } = "rgba32";
 
-        [Option("slicesH", Required = false, HelpText = Help.SlicesH)]
+        [Option('h', "slicesH", Required = false, HelpText = Help.SlicesH)]
         public int SlicesH { get; set; } = 1;
 
-        [Option("slicesV", Required = false, HelpText = Help.SlicesV)]
+        [Option('v', "slicesV", Required = false, HelpText = Help.SlicesV)]
         public int SlicesV { get; set; } = 1;
 
 
