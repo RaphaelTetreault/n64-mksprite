@@ -1,3 +1,6 @@
+# Notice
+This code is outdated and includes a number of known bugs. This was a minor hobby project at one point and is not suitable as a substitue for the original [mksprite](https://github.com/DragonMinded/libdragon/tree/trunk/tools/mksprite).
+
 # n64-mksprite
 A C# implementation of libdragon's mksprite tool with a few more bells and whistles.
 
